@@ -1,8 +1,10 @@
 [package]
-name = "quake-3-log-summary"
-version = "0.1.0"
+name = "pasoqa3"
+version = "0.0.1"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["João M. Bezerra <marcospb19@hotmail.com>"]
+description = "Parse and summarize the match summary from Quake 3 logs"
+license = "MIT"
+repository = "https://github.com/marcospb19/pasoqa3"
 
 [dependencies]
