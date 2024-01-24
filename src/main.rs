@@ -1,3 +1,12 @@
+mod cli;
+
+use clap::Parser;
+use cli::Args;
+
 fn main() {
-    println!("Hello, world!");
+    let Args { files } = Args::parse();
+
+    for file in files {
+        dbg!(file);
+    }
 }
