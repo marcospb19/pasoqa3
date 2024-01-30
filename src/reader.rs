@@ -1,14 +1,20 @@
 use std::{
-    io::{self, BufRead, BufReader, Lines},
+    io::{BufRead, BufReader, Lines},
     path::Path,
 };
 
 use fs_err as fs;
 
+use crate::{Result, WrapErr};
+
 type LineReader = Lines<BufReader<fs::File>>;
 
-pub fn line_reader_from_file(path: &Path) -> io::Result<LineReader> {
-    let file = fs::OpenOptions::new().read(true).open(path)?;
+pub fn line_reader_from_file(path: &Path) -> Result<LineReader> {
+    let file = fs::OpenOptions::new()
+        .read(true)
+        .open(path)
+        .wrap_err("Failed to open log file for reading")?;
+
     let reader = BufReader::with_capacity(1024 * 8, file);
     Ok(reader.lines())
 }
