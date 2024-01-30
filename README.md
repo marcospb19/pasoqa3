@@ -1,6 +1,6 @@
 # `pasoqa3`
 
-`pasoqa3` is an acronym for "***P***arser ***A***nd ***S***ummarizer ***O***f ***Q***u**A**ke ***3*** (log files)".
+`pasoqa3` is an acronym for "***P***arser ***A***nd ***S***ummarizer ***O***f ***Q***uake ***A***rena ***3*** (log files)".
 
 Check [`DECISIONS.md`] for an explanation of why I took some of the decisions I did.
 
@@ -18,9 +18,34 @@ You can see the binary at `~/.cargo/bin/pasoqa3`, make sure `~/.cargo/bin` is li
 ## Usage examples
 
 ```sh
-pasoqa3 example.log
-pasoqa3 1.log 2.log 3.log
-pasoqa3 path/to/log/file/example.log
+# Summarize all matches in `file.log`
+pasoqa3 file.log
+
+# Show summary of the fourth match
+pasoqa3 q3.log --game 4
+```
+
+```json
+{
+  "game_4": {
+    "total_kills": 4,
+    "players": [
+      "Isgalamido",
+      "Zeh",
+      "Dono da Bola"
+    ],
+    "scoreboard": {
+      "Zeh": -2,
+      "Dono da Bola": -1,
+      "Isgalamido": 1
+    },
+    "death_causes": {
+      "MOD_FALLING": 1,
+      "MOD_ROCKET": 1,
+      "MOD_TRIGGER_HURT": 2
+    }
+  }
+}
 ```
 
 ## How it works

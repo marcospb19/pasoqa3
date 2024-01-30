@@ -43,8 +43,7 @@ impl LogMessageParser {
                 ("ClientDisconnect:", Self::parse_client_disconnect),
                 ("ClientUserinfoChanged:", Self::parse_client_info_changed),
                 ("Kill:", Self::parse_kill),
-                ("InitGame:", Self::restart_game),
-                ("ShutdownGame:", Self::restart_game),
+                ("InitGame:", Self::reset_match),
             ];
 
             let Some(matched_method) = method_dispatch_map
@@ -95,7 +94,7 @@ impl LogMessageParser {
         }))
     }
 
-    fn restart_game(&mut self, _text: &str) -> Result<Option<Event>> {
+    fn reset_match(&mut self, _text: &str) -> Result<Option<Event>> {
         self.state.clear();
         Ok(Some(Event::ResetMatch))
     }

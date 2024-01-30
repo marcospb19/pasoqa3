@@ -83,7 +83,7 @@ impl SummaryProcessor {
             let player_names: Vec<&str> =
                 self.player_names.values().map(String::as_str).collect();
 
-            let kills_map: Vec<(&str, PlayerScore)> = self
+            let scoreboard_map: HashMap<&str, PlayerScore> = self
                 .scoreboard
                 .into_iter()
                 .map(|(id, score)| (self.player_names[&id].as_str(), score))
@@ -93,7 +93,7 @@ impl SummaryProcessor {
                 match_name: {
                     "total_kills": self.total_kills,
                     "players": player_names,
-                    "kills": kills_map,
+                    "scoreboard": scoreboard_map,
                     "death_causes": *self.death_cause_count,
                 }
             })
