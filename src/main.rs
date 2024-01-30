@@ -1,7 +1,5 @@
 //! Entry point for `pasoqa3`.
 
-use std::path::Path;
-
 mod cli;
 mod error;
 mod log;
@@ -12,35 +10,20 @@ use error::{err, Result, WrapErr, WrapNone};
 use log::{LogMessageParser, SummaryProcessor};
 use reader::line_reader_from_file;
 
-/// Parses `cli::Args` and runs for each file.
+/// Build and output a summary for the provided log file.
+///
+/// Reads from the log file, parses its events, and processes them to build
+/// summaries.
 fn main() -> Result<()> {
     // Install panic and error report handlers
     color_eyre::install()?;
 
-    let Args { files } = clap::Parser::parse();
+    let Args { file, game_to_show } = clap::Parser::parse();
 
-    for file in &files {
-        // If there are multiple summaries to show, output the file name
-        if files.len() >= 2 {
-            println!("----- {file:?} -----");
-        }
-
-        // `eyre::Report` uses `Debug`, it's OK to return it from `main`
-        run(file)?;
-    }
-
-    Ok(())
-}
-
-/// Build and output a kill feed summary for a single log file.
-///
-/// This function reads from the log file, parses its events, and processes
-/// them to build a summary.
-fn run(log_path: &Path) -> Result<()> {
-    let line_reader = line_reader_from_file(log_path)?;
+    let line_reader = line_reader_from_file(&file)?;
 
     let mut parser = LogMessageParser::new();
-    let mut summaries = SummaryProcessor::new();
+    let mut summaries = SummaryProcessor::new(game_to_show);
 
     for (i, line) in line_reader.enumerate() {
         let line_number = i + 1;

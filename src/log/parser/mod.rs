@@ -2,7 +2,7 @@ use std::collections::{hash_map::Entry, HashMap};
 
 use crate::{
     err,
-    log::{Event, PlayerId, PlayerName, WeaponId},
+    log::{Event, PlayerId, PlayerName},
     Result, WrapErr, WrapNone,
 };
 
@@ -79,10 +79,19 @@ impl LogMessageParser {
                 .wrap_none("Kill messages expected three integer IDs")
         };
 
+        let death_cause = {
+            let death_cause_position = kill_details
+                .rfind("MOD_")
+                .wrap_none("Death cause missing from Kill message")?;
+
+            let (_left, right) = kill_details.split_at(death_cause_position);
+            right.to_owned()
+        };
+
         Ok(Some(Event::Kill {
             killer: next_id()?,
             victim: next_id()?,
-            weapon_used: next_id()?,
+            death_cause,
         }))
     }
 

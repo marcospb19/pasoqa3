@@ -6,7 +6,7 @@ pub use summary::SummaryProcessor;
 
 type Id = u16;
 type PlayerId = Id;
-type WeaponId = Id;
+type WeaponName = String;
 type PlayerName = String;
 
 const WORLD_ID: Id = 1022;
@@ -30,7 +30,7 @@ pub enum Event {
     Kill {
         killer: PlayerId,
         victim: PlayerId,
-        weapon_used: WeaponId,
+        death_cause: WeaponName,
     },
     /// The current match ended.
     ///
