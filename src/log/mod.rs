@@ -9,6 +9,8 @@ type PlayerId = Id;
 type WeaponId = Id;
 type PlayerName = String;
 
+const WORLD_ID: Id = 1022;
+
 /// An event emmited by the log parser.
 ///
 /// Consider each line in a log file to be a "message", then, an event is a
