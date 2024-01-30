@@ -1,6 +1,8 @@
 use std::{collections::HashMap, mem};
 
+use atty::Stream;
 use counter::Counter;
+use highlighting::highlight_json;
 
 use super::{Event, PlayerId, WORLD_ID};
 
@@ -97,9 +99,15 @@ impl SummaryProcessor {
             })
         };
 
-        let serialized = serialize_json(&json);
+        let json_text = serialize_json(&json);
 
-        println!("{serialized}");
+        let json_text = if atty::is(Stream::Stdout) {
+            highlight_json(&json_text)
+        } else {
+            json_text
+        };
+
+        println!("{json_text:}");
     }
 }
 
