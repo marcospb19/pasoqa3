@@ -1,5 +1,5 @@
 # Stable features
-max_width = 100
+max_width = 80
 use_field_init_shorthand = true
 newline_style = "Unix"
 edition = "2021"

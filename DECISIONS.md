@@ -1,6 +1,6 @@
 Here I document decisions I took in this project, and the rationale behind them.
 
-## Why not `serde`?
+## Why not `serde` for the parser?
 
 Within the semantics of `serde::Deserialize`, you can either succeed or fail at parsing a document.
 

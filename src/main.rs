@@ -1,32 +1,59 @@
+//! Entry point for `pasoqa3`.
+
+use std::{io, path::Path, process::exit};
+
 mod cli;
-mod log;
+mod parser;
+mod reader;
+mod summary;
 
-use std::{
-    fs,
-    io::{self, BufReader},
-    path::Path,
-};
-
-use clap::Parser;
 use cli::Args;
-use log::LogReader;
+use parser::LogMessageParser;
+use reader::line_reader_from_file;
+use summary::Summary;
 
+/// Parses `cli::Args` and runs for each file.
 fn main() {
-    let Args { files } = Args::parse();
+    let Args { files } = clap::Parser::parse();
 
     for file in &files {
-        let reader = reader_from_file(file).unwrap();
+        // If there are multiple summaries to show, output the file name
+        if files.len() >= 2 {
+            println!("----- {file:?} -----");
+        }
 
-        let log_parser = LogReader::new(reader);
+        let result = run(file);
 
-        for log_line in log_parser {
-            dbg!(log_line);
+        if let Err(err) = result {
+            eprintln!("Error: {err}");
+            exit(1);
         }
     }
 }
 
-fn reader_from_file(path: &Path) -> io::Result<BufReader<fs::File>> {
-    let file = fs::OpenOptions::new().read(true).open(path)?;
-    let reader = BufReader::with_capacity(1024 * 8, file);
-    Ok(reader)
+/// Build and output a kill feed summary for a single log file.
+///
+/// This function reads from the log file, parses its events, and processes
+/// them to build a summary.
+fn run(log_path: &Path) -> io::Result<()> {
+    let line_reader = line_reader_from_file(log_path)?;
+
+    let mut parser = LogMessageParser::new();
+    let mut summary = Summary::new();
+
+    for line in line_reader {
+        // Check read line
+        let line = line?;
+
+        // Pass line to parser
+        let event = parser.parse_line(&line);
+
+        if let Some(event) = event {
+            // Pass event to summary
+            summary.process(event);
+        }
+    }
+
+    summary.output();
+    Ok(())
 }
