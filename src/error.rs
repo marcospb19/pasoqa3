@@ -1,3 +1,5 @@
+//! Error treatment utils.
+
 use std::fmt::Display;
 
 use color_eyre::eyre;

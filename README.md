@@ -18,10 +18,13 @@ You can see the binary at `~/.cargo/bin/pasoqa3`, make sure `~/.cargo/bin` is li
 ## Usage examples
 
 ```sh
+# Check the help message
+pasoqa3 --help
+
 # Summarize all matches in `file.log`
 pasoqa3 file.log
 
-# Show summary of the fourth match
+# Summarize fourth match
 pasoqa3 q3.log --game 4
 ```
 

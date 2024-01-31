@@ -1,3 +1,5 @@
+//! Report/summary builder for `q3` matches.
+
 use std::{collections::HashMap, mem};
 
 use atty::Stream;
@@ -8,6 +10,9 @@ use super::{Event, PlayerId, WORLD_ID};
 
 type PlayerScore = i32;
 
+/// Processes events to build and output summaries.
+///
+/// Built match summaries are outputted as highlighted `JSON`.
 #[derive(Default, Debug)]
 pub struct SummaryProcessor {
     match_number: u32,

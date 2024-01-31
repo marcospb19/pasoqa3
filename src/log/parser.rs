@@ -1,3 +1,5 @@
+//! `LogMessageParser` parses log messages into higher-level events.
+
 use std::collections::{hash_map::Entry, HashMap};
 
 use crate::{
@@ -17,6 +19,8 @@ use id_parsing::{parse_id, IdSequenceParser};
 /// This parser is stateful.
 ///
 /// This parser skips unrelated messages.
+///
+/// Check [`Event`] docs.
 pub struct LogMessageParser {
     state: LogState,
 }

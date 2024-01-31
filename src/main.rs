@@ -28,7 +28,6 @@ fn main() -> Result<()> {
     for (i, line) in line_reader.enumerate() {
         let line_number = i + 1;
 
-        // Check read line
         let line =
             line.wrap_err_with(|| err!("Failed to read line {line_number}"))?;
 
@@ -37,10 +36,9 @@ fn main() -> Result<()> {
             .parse_line(&line)
             .wrap_err_with(|| err!("Failed to parse line {line_number}"))?;
 
-        // If the current line generated a event to be processed
+        // If parsing the current line emitted an event, process it
         if let Some(event) = event {
-            // Pass event to the summary processor. If the match summary is
-            // finished, this will output it to the screen.
+            // `SummaryProcessor` receives events and outputs summaries
             summaries.process(event);
         }
     }

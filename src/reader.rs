@@ -1,3 +1,5 @@
+//! Provide a file line reader.
+
 use std::{
     io::{BufRead, BufReader, Lines},
     path::Path,
@@ -9,6 +11,7 @@ use crate::{Result, WrapErr};
 
 type LineReader = Lines<BufReader<fs::File>>;
 
+/// A buffered line reader from a file.
 pub fn line_reader_from_file(path: &Path) -> Result<LineReader> {
     let file = fs::OpenOptions::new()
         .read(true)

@@ -1,3 +1,5 @@
+//! CLI argparsing definitions with `clap`.
+
 use std::path::PathBuf;
 
 use clap::Parser;
