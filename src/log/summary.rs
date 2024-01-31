@@ -1,6 +1,6 @@
 //! Report/summary builder for `q3` matches.
 
-use std::{collections::HashMap, mem};
+use std::{collections::BTreeMap, mem};
 
 use atty::Stream;
 use counter::Counter;
@@ -19,7 +19,7 @@ pub struct SummaryProcessor {
     total_kills: u32,
     death_cause_count: Counter<String, u32>,
     scoreboard: Counter<PlayerId, PlayerScore>,
-    player_names: HashMap<PlayerId, String>,
+    player_names: BTreeMap<PlayerId, String>,
     game_to_show: Option<u32>,
 }
 
@@ -27,7 +27,7 @@ impl SummaryProcessor {
     pub fn new(game_to_show: Option<u32>) -> Self {
         Self {
             game_to_show,
-            match_number: 1,
+            match_number: 0,
             ..Self::default()
         }
     }
@@ -74,9 +74,10 @@ impl SummaryProcessor {
     }
 
     pub fn output(self) {
-        let should_skip = self
-            .game_to_show
-            .is_some_and(|game| self.match_number != game);
+        let should_skip = self.match_number == 0
+            || self
+                .game_to_show
+                .is_some_and(|game| self.match_number != game);
 
         if should_skip {
             return;
@@ -88,7 +89,7 @@ impl SummaryProcessor {
             let player_names: Vec<&str> =
                 self.player_names.values().map(String::as_str).collect();
 
-            let scoreboard_map: HashMap<&str, PlayerScore> = self
+            let scoreboard_map: BTreeMap<&str, PlayerScore> = self
                 .scoreboard
                 .into_iter()
                 .map(|(id, score)| (self.player_names[&id].as_str(), score))
